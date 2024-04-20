@@ -12,4 +12,4 @@ if __name__ == "__main__":
 
     soup = BeautifulSoup(html, "html.parser")
     oceanic_cruise = OceanicCruise(soup)
-    print(oceanic_cruise)
+    oceanic_cruise.to_csv("test_output.csv", 'w')

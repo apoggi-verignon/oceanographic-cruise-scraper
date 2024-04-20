@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv
 
 class OceanicCruise:
     def __init__(self, soup):
@@ -88,6 +89,48 @@ class OceanicCruise:
         end_date = datetime.strptime(split_dates[1], '%d/%m/%Y')
 
         return (start_date, end_date)
+
+    def to_csv(self, filepath: str, mode: str):
+        with open(filepath, mode) as csvfile:
+            header = [
+                "Thématique",
+                "Nom de la campagne",
+                "Année",
+                "Navire",
+                "Durée",
+                "Chef de mission",
+                "Type de campagne",
+                "Première Evaluation",
+                "Dernière Evaluation",
+                "Prochaine Evaluation",
+                "En attente de modifs mineures (sans repasser par évaluation en session plénière)",
+                "Commentaire",
+                "Valo déjà dispo en ligne (pages DOI)",
+                "Adresse(s) email",
+                "Page Campagne (site FOF)"
+            ]
+            writer = csv.DictWriter(csvfile, fieldnames=header)
+
+            if mode == "w":
+                writer.writeheader()
+                
+            writer.writerow({
+                "Thématique": self.theme,
+                "Nom de la campagne": self.name,
+                "Année": self.year,
+                "Navire": self.ship,
+                "Durée": self.duration,
+                "Chef de mission": " ".join(self.cruise_chief),
+                "Type de campagne": self.type,
+                "Première Evaluation": "",
+                "Dernière Evaluation": "",
+                "Prochaine Evaluation": "",
+                "En attente de modifs mineures (sans repasser par évaluation en session plénière)": "",
+                "Commentaire": "",
+                "Valo déjà dispo en ligne (pages DOI)": "",
+                "Adresse(s) email": " ".join(self.mails),
+                "Page Campagne (site FOF)": self.url,
+            })
 
     def __str__(self):
         return (
